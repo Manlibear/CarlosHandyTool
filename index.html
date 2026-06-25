@@ -1,102 +1,114 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carlo's Handy Tool</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="css/styles.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carlo's Handy Tool</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
 </head>
+
 <body>
 
-<nav class="navbar navbar-dark bg-dark bg-gradient mb-4 border-bottom border-secondary-subtle">
-  <div class="container">
-    <span class="navbar-brand mb-0 h1 brand-title">🖐️ Carlo's Handy tool</span>
-  </div>
-</nav>
-
-<div class="container pb-5">
-
-  <!-- UPLOAD VIEW -->
-  <section id="uploadView">
-    <div class="card accent-card shadow-lg mb-4">
-      <div class="card-body">
-        <h5 class="card-title">Add a video</h5>
-        <p class="card-text text-secondary">Upload one video at a time to mark left/right hand positions over time.</p>
-        <input class="form-control" type="file" id="videoFileInput" accept="video/*">
-      </div>
+  <nav class="navbar navbar-dark bg-dark bg-gradient mb-4 border-bottom border-secondary-subtle">
+    <div class="container">
+      <span class="navbar-brand mb-0 h1 brand-title">🖐️ Carlo's Handy tool</span>
     </div>
+  </nav>
 
-    <div class="card accent-card shadow-lg mb-4">
-      <div class="card-body">
-        <h5 class="card-title">Completed videos</h5>
-        <ul id="sessionList" class="list-group mb-3"></ul>
-        <button id="generateHeatmapBtn" class="btn btn-info" disabled>Generate Heatmap</button>
-      </div>
-    </div>
-  </section>
+  <div class="container pb-5">
 
-  <!-- MARK VIEW -->
-  <section id="markView" class="d-none">
-    <div class="card accent-card shadow-lg mb-4">
-      <div class="card-body">
-        <h5 class="card-title">Marking: <span id="markFileName" class="text-info"></span></h5>
-        <div id="markError" class="alert alert-danger d-none"></div>
-
-        <div class="video-wrapper mb-3">
-          <video id="markVideo"></video>
-          <canvas id="markCanvas"></canvas>
+    <!-- UPLOAD VIEW -->
+    <section id="uploadView">
+      <div class="card accent-card shadow-lg mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Add a video</h5>
+          <p class="card-text text-secondary">Upload one video at a time to mark left/right hand positions over time.
+          </p>
+          <input class="form-control" type="file" id="videoFileInput" accept="video/*">
         </div>
-
-        <div class="d-flex flex-wrap gap-2 mb-3">
-          <button id="toggleLeftBtn" class="btn btn-outline-primary">Add Left Hand</button>
-          <button id="toggleRightBtn" class="btn btn-outline-danger">Add Right Hand</button>
-          <div class="text-secondary control-hint">[Spacebar] to play/pause</div>
-        </div>
-
-        <button id="doneBtn" class="btn btn-success" disabled>Done with this video</button>
       </div>
-    </div>
-  </section>
 
-  <!-- RESULTS VIEW -->
-  <section id="resultsView" class="d-none">
-    <div class="card accent-card shadow-lg mb-4">
-      <div class="card-body">
-        <h5 class="card-title">Heatmap</h5>
+      <div class="card accent-card shadow-lg mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Completed videos</h5>
+          <ul id="sessionList" class="list-group mb-3"></ul>
+          <button id="generateHeatmapBtn" class="btn btn-info" disabled>Generate Heatmap</button>
+        </div>
+      </div>
+    </section>
 
-        <div class="mb-3">
-          <label for="alphaSlider" class="form-label">
-            Weighting: time-held <span id="alphaValue" class="text-info fw-semibold">0.50</span> count-based
-          </label>
-          <input type="range" class="form-range" id="alphaSlider" min="0" max="1" step="0.01" value="0.5">
-          <div class="d-flex justify-content-between text-secondary small">
-            <span>Count-based</span>
-            <span>Time-held</span>
+    <!-- MARK VIEW -->
+    <section id="markView" class="d-none">
+      <div class="card accent-card shadow-lg mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Marking: <span id="markFileName" class="text-info"></span></h5>
+          <div id="markError" class="alert alert-danger d-none"></div>
+
+          <div class="video-wrapper mb-3">
+            <video id="markVideo"></video>
+            <canvas id="markCanvas"></canvas>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <button id="toggleLeftBtn" class="btn btn-outline-primary">Add Left Hand</button>
+            <button id="toggleRightBtn" class="btn btn-outline-danger">Add Right Hand</button>
+            <div class="text-secondary control-hint">
+              <div class="control-hint-item">
+                <span class="bold text-primary">[Spacebar]</span> to play/pause<br />
+              </div>
+              <div class="control-hint-item">
+                <span class="bold text-primary">[LeftArrow]</span>/<span class="bold text-primary">[RightArrow]</span>
+                to scrub through playback
+              </div>
+            </div>
+          </div>
+
+          <button id="doneBtn" class="btn btn-success" disabled>Done with this video</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS VIEW -->
+    <section id="resultsView" class="d-none">
+      <div class="card accent-card shadow-lg mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Heatmap</h5>
+
+          <div class="mb-3">
+            <label for="alphaSlider" class="form-label">
+              Weighting: time-held <span id="alphaValue" class="text-info fw-semibold">0.50</span> count-based
+            </label>
+            <input type="range" class="form-range" id="alphaSlider" min="0" max="1" step="0.01" value="0.5">
+            <div class="d-flex justify-content-between text-secondary small">
+              <span>Count-based</span>
+              <span>Time-held</span>
+            </div>
+          </div>
+
+          <div class="results-wrapper mb-3">
+            <img id="resultImage" alt="First frame">
+            <div id="heatmapContainer"></div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <button id="downloadHeatmapBtn" class="btn btn-info">Download Image</button>
+            <button id="backToUploadBtn" class="btn btn-secondary">Back to Upload</button>
           </div>
         </div>
-
-        <div class="results-wrapper mb-3">
-          <img id="resultImage" alt="First frame">
-          <div id="heatmapContainer"></div>
-        </div>
-
-        <div class="d-flex flex-wrap gap-2">
-          <button id="downloadHeatmapBtn" class="btn btn-info">Download Image</button>
-          <button id="backToUploadBtn" class="btn btn-secondary">Back to Upload</button>
-        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-</div>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/heatmap.js@2.0.5/build/heatmap.min.js"></script>
-<script src="js/videoSession.js"></script>
-<script src="js/handMarker.js"></script>
-<script src="js/weighting.js"></script>
-<script src="js/markView.js"></script>
-<script src="js/heatmapView.js"></script>
-<script src="js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/heatmap.js@2.0.5/build/heatmap.min.js"></script>
+  <script src="js/videoSession.js"></script>
+  <script src="js/handMarker.js"></script>
+  <script src="js/weighting.js"></script>
+  <script src="js/markView.js"></script>
+  <script src="js/heatmapView.js"></script>
+  <script src="js/app.js"></script>
 </body>
+
 </html>

@@ -61,8 +61,12 @@ body {
   left: 0;
 }
 
-.control-hint{
+.control-hint {
   display: flex;
   align-items: anchor-center;
-  margin-left: auto;
+  margin-left: 40px;
+}
+
+.control-hint-item {
+  margin-left: 20px;
 }
