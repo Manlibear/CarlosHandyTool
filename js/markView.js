@@ -35,16 +35,26 @@ const MarkView = (() => {
     document.addEventListener('keydown', onKeyDown);
   }
 
+  const SCRUB_SECONDS = 1;
+
   function onKeyDown(e) {
-    if (e.code !== 'Space') return;
     if (!currentSession) return;
     const tag = e.target.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON') return;
-    e.preventDefault();
-    if (videoEl.paused) {
-      videoEl.play();
-    } else {
-      videoEl.pause();
+
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (videoEl.paused) {
+        videoEl.play();
+      } else {
+        videoEl.pause();
+      }
+    } else if (e.code === 'ArrowLeft') {
+      e.preventDefault();
+      videoEl.currentTime = Math.max(0, videoEl.currentTime - SCRUB_SECONDS);
+    } else if (e.code === 'ArrowRight') {
+      e.preventDefault();
+      videoEl.currentTime = Math.min(videoEl.duration, videoEl.currentTime + SCRUB_SECONDS);
     }
   }
 

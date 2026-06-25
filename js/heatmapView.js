@@ -1,13 +1,16 @@
 
 const HeatmapView = (() => {
   let heatmapInstance = null;
-  let bgImage, heatmapContainer, slider, sliderValueLabel;
+  let bgImage, heatmapContainer, slider, sliderValueLabel, downloadBtn;
 
   function init() {
     bgImage = document.getElementById('resultImage');
     heatmapContainer = document.getElementById('heatmapContainer');
     slider = document.getElementById('alphaSlider');
     sliderValueLabel = document.getElementById('alphaValue');
+    downloadBtn = document.getElementById('downloadHeatmapBtn');
+
+    downloadBtn.addEventListener('click', downloadComposite);
 
     slider.addEventListener('input', () => {
       sliderValueLabel.textContent = Number(slider.value).toFixed(2);
@@ -58,6 +61,27 @@ const HeatmapView = (() => {
     const points = Weighting.buildHeatmapPoints(App.sessions, alpha, bgImage.clientWidth, bgImage.clientHeight);
     const max = points.length ? Math.max(...points.map(p => p.value)) : 1;
     heatmapInstance.setData({ max: max || 1, data: points });
+  }
+
+  function downloadComposite() {
+    if (!heatmapInstance) return;
+    const w = bgImage.clientWidth;
+    const h = bgImage.clientHeight;
+    const composite = document.createElement('canvas');
+    composite.width = w;
+    composite.height = h;
+    const cctx = composite.getContext('2d');
+    cctx.drawImage(bgImage, 0, 0, w, h);
+
+    const heatImg = new Image();
+    heatImg.onload = () => {
+      cctx.drawImage(heatImg, 0, 0, w, h);
+      const link = document.createElement('a');
+      link.download = 'hand-heatmap.png';
+      link.href = composite.toDataURL('image/png');
+      link.click();
+    };
+    heatImg.src = heatmapInstance.getDataURL();
   }
 
   return { init, show };
